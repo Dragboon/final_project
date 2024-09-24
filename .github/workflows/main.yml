@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Start server
-        run: cd api | python server.py
+        run: python api/server.py
 
       - name: Start tests
         run: python3 -m unittest discover -s tests
