@@ -19,7 +19,8 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Start server
-        run: python api/server.py
+        working-directory: ./api
+        run: python server.py
 
       - name: Start tests
         run: python3 -m unittest discover -s tests
