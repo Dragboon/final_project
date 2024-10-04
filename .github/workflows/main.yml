@@ -11,7 +11,19 @@ permissions:
   id-token: write
 
 jobs:
+
   tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Start tests
+        run: python3 -m unittest discover -s tests
+
+  server:
+    needs: [tests]
     runs-on: ubuntu-latest
 
     steps:
@@ -22,9 +34,6 @@ jobs:
         working-directory: ./api
         run: python server.py
 
-      - name: Start tests
-        run: python3 -m unittest discover -s tests
-  
   deploy:
     needs: [tests]
     environment:
@@ -40,7 +49,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: './front'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
