@@ -1,1 +1,1 @@
-APIUrl = 'http://linux:3000'
+APIUrl = 'http://localhost:3000'
