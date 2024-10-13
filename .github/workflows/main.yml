@@ -22,35 +22,14 @@ jobs:
       - name: Start tests
         run: python3 -m unittest discover -s tests
 
-  server:
+  ansible:
     needs: [tests]
     runs-on: self-hosted
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
       
-      - name: Start server
-        working-directory: ./api
-        run: python3 server.py
+      - name: Ansible configuration
+        working-directory: /ansible-folder
+        run: ansible-playbook -i inventory.yml playbook.yml
 
-  deploy:
-    needs: [tests]
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
     

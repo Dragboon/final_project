@@ -1,1 +1,1 @@
-APIUrl = 'http://localhost:3000'
+APIUrl = 'http://ansible-host.local:3000'
