@@ -18,6 +18,7 @@ jobs:
         run: python3 -m unittest discover -s tests
 
   docs:
+    needs: [tests]
     runs-on: ubuntu-latest
 
     steps:
@@ -27,24 +28,34 @@ jobs:
       - name: Generate docs
         run: python3 -m pydoc -w api.server && cp api.server.html doc/
 
-      - name: Create-Release
-        id: release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: "${{ env.ver }}"
-          release_name: "${{ env.ver }}"
-          draft: false
-          prerelease: false
+      # - name: Commit and push docs
+      #   run: |
+      #     git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+      #     git config --global user.email "@users.noreply.github.com"
+      #     git add docs
+      #     git commit -m "Generate docs"
+      #     git fetch origin
+      #     git rebase --strategy-option=theirs origin/main
+      #     git push
+
+  release:
+    needs: [tests, docs]
+    - name: Create-Release
+      id: release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: "release"
+        release_name: "Release 1.0"
+        draft: false
+        prerelease: false
 
   ansible:
-    needs: [tests]
+    needs: [tests, docs, release]
     runs-on: self-hosted
 
     steps:
       - name: Ansible configuration
         working-directory: /ansible-folder
-        run: ansible-playbook -i inventory.yml playbook.yml
-
-    
+        run: ansible-playbook -i inventory.yml playbook.yml  
