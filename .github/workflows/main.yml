@@ -27,7 +27,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      
       - name: Ansible configuration
         working-directory: /ansible-folder
         run: ansible-playbook -i inventory.yml playbook.yml
