@@ -37,7 +37,6 @@ jobs:
           git commit -m "Generate docs"
           git fetch
           git checkout main
-          git pull origin main
           git merge dev
           git push -u origin main
 
