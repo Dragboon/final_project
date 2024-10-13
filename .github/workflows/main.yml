@@ -1,4 +1,4 @@
-name: python_app
+name: Mon journal
 on:
   push:
     branches: ["main"]
