@@ -5,11 +5,6 @@ on:
   pull_request:
     branches: ["main"]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
 
   tests:
@@ -31,6 +26,17 @@ jobs:
 
       - name: Generate docs
         run: python3 -m pydoc -w api.server && cp api.server.html doc/
+
+      - name: Create-Release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "${{ env.ver }}"
+          release_name: "${{ env.ver }}"
+          draft: false
+          prerelease: false
 
   ansible:
     needs: [tests]
