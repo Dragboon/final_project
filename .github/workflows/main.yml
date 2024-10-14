@@ -38,7 +38,8 @@ jobs:
       - name: Merge with main
         run: |
           git checkout main
-          git merge dev 
+          git pull origin main
+          git merge dev --allow-unrelated-histories
           git push origin main
 
   release:
