@@ -39,7 +39,7 @@ jobs:
         run: |
           git checkout main
           git pull origin main
-          git merge dev --allow-unrelated-histories
+          git merge dev --allow-unrelated-histories --strategy-option=theirs
           git push origin main
 
   release:
