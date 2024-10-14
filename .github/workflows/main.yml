@@ -57,11 +57,11 @@ jobs:
           draft: false
           prerelease: false
 
-  ansible:
-    needs: [tests, docs, release]
-    runs-on: self-hosted
+  # ansible:
+  #   needs: [tests, docs, release]
+  #   runs-on: self-hosted
 
-    steps:
-      - name: Ansible configuration
-        working-directory: /ansible-folder
-        run: ansible-playbook -i inventory.yml playbook.yml  
+  #   steps:
+  #     - name: Ansible configuration
+  #       working-directory: /ansible-folder
+  #       run: ansible-playbook -i inventory.yml playbook.yml  
