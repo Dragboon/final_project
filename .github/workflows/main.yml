@@ -25,7 +25,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Commit and push docs
+      - name: Generate and push docs
         run: |
           git config --global user.name "Dragboon"
           git config --global user.email "${{ secrets.EMAIL }}"
@@ -52,16 +52,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "release1.1"
-          release_name: "Release 1.1"
+          tag_name: "release1.2"
+          release_name: "Release 1.2"
           draft: false
           prerelease: false
 
-  # ansible:
-  #   needs: [tests, docs, release]
-  #   runs-on: self-hosted
+  ansible:
+    needs: [tests, docs, release]
+    runs-on: self-hosted
 
-  #   steps:
-  #     - name: Ansible configuration
-  #       working-directory: /ansible-folder
-  #       run: ansible-playbook -i inventory.yml playbook.yml  
+    steps:
+      - name: Ansible configuration
+        working-directory: /ansible-folder
+        run: ansible-playbook -i inventory.yml playbook.yml  
