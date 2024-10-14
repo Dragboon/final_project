@@ -25,20 +25,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Generate docs
-      #   run: python3 -m pydoc -w api.server && cp api.server.html doc/
-
       - name: Commit and push docs
         run: |
           git config --global user.name "Dragboon"
           git config --global user.email "${{ secrets.EMAIL }}"
-          python3 -m pydoc -w api.server && cp api.server.html doc/
-          git add doc
-          git commit -m "Generate docs"
           git fetch
+          python3 -m pydoc -w api.server && cp api.server.html doc/
+          git add .
+          git commit -m "Generate docs"
+          git push origin dev
+
+      - name: Merge with main
+        run: |
           git checkout main
-          git merge --allow-unrelated-histories dev
-          git push -u origin main
+          git pull origin main
+          git merge dev --allow-unrelated-histories --strategy-option=theirs
+          git push origin main
 
   release:
     needs: [tests, docs]
@@ -55,11 +57,11 @@ jobs:
           draft: false
           prerelease: false
 
-  ansible:
-    needs: [tests, docs, release]
-    runs-on: self-hosted
+  # ansible:
+  #   needs: [tests, docs, release]
+  #   runs-on: self-hosted
 
-    steps:
-      - name: Ansible configuration
-        working-directory: /ansible-folder
-        run: ansible-playbook -i inventory.yml playbook.yml  
+  #   steps:
+  #     - name: Ansible configuration
+  #       working-directory: /ansible-folder
+  #       run: ansible-playbook -i inventory.yml playbook.yml  
