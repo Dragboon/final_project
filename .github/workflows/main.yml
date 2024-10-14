@@ -35,6 +35,7 @@ jobs:
           git add .
           git commit -m "Generate docs"
           git push origin dev
+        continue-on-error: true
 
       - name: Merge with main
         run: |
