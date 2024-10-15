@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+ 
       - name: Generate and push docs
         run: |
           git config --global user.name "Dragboon"
@@ -48,7 +48,7 @@ jobs:
     needs: [tests, docs]
     runs-on: ubuntu-latest
     env:
-      VERSION: 1.6
+      VERSION: 1.7
     steps:
       - name: Create-Release
         id: release
